@@ -1,0 +1,24 @@
+{
+  "name": "women-workshop-2017",
+  "version": "1.0.0",
+  "description": "Website for Women Workshop 2017",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FMGordillo/WomenWorkshop2017.git"
+  },
+  "author": "Facundo Martin Gordillo <famargor@ar.ibm.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FMGordillo/WomenWorkshop2017/issues"
+  },
+  "homepage": "https://github.com/FMGordillo/WomenWorkshop2017#readme",
+  "dependencies": {
+    "cfenv": "^1.0.4",
+    "dotenv": "^4.0.0",
+    "express": "^4.14.1"
+  }
+}
