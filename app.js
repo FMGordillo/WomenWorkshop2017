@@ -1,7 +1,7 @@
 var express = require('express'),
   cfenv = require('cfenv'),
   app = express()
-  cloudant  = require("cloudant");
+  Cloudant  = require("cloudant");
 require("./config/express")(app);
 require('dotenv').load();
 var appEnv = cfenv.getAppEnv();
@@ -16,19 +16,24 @@ app.set("testDb", true);
 
 var usernameDb="",
   passwordDb="",
-  dbname="Women-2017";
+  dbname="women-2017",
+  d = new Date(),
+  date =  d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
 
 if(process.env.VCAP_SERVICES) {
   usernameDb=appEnv.getServiceCreds('TuTalentoOculto-cloudantNoSQLDB').username;
-  passwordDb=appEnv.getServiceCreds('TuTalentoOculto-cloudantNoSQLDB').password;
+  usernameAPIDb=appEnv.getServiceCreds('TuTalentoOculto-cloudantNoSQLDB').apikey;
+  passwordAPIDb=appEnv.getServiceCreds('TuTalentoOculto-cloudantNoSQLDB').apipw;
 } else {
   usernameDb= process.env.CLOUDANT_USERNAME;
-  passwordDb= process.env.CLOUDANT_PW;
+  usernameAPIDb=process.env.CLOUDANT_APIKEY;
+  passwordAPIDb= process.env.CLOUDANT_APIPW;
 }
 
-cloudant({
+var cloudant = Cloudant({
     account: usernameDb,
-    password: passwordDb
+    key: usernameAPIDb,
+    password: passwordAPIDb
   }, function(err, cloudant) {
   if (err)
     return console.log("Error connecting to Cloudant account %s: %s", err.message);
@@ -44,6 +49,42 @@ app.get("/", function(req, res) {
   });
 });
 
+app.post("/response", function(req, res, next) {
+  var name = req.body.inputName,
+  email = req.body.inputEmail,
+  orgOpt = req.body.optionsRadios,
+  orgTxt = req.body.inputOrg,
+  explain = req.body.inputExplain;
+
+  app.womendb.insert(
+    {
+      'name': name,
+      'email': email,
+      'orgOption': orgOpt,
+      'orgText': orgTxt,
+      'explaination': explain,
+      'date': date
+
+    }, function(errDb,bodyDb,headerDb) {
+      if(errDb) {
+        console.log("Error creating document - ", errDb.message);
+        return;
+      }
+      console.log("all records inserted.")
+      console.log(bodyDb);
+    });
+
+  res.render("response", {
+    title: "¡Muchas gracias!",
+    name: name,
+    email: email,
+    orgOpt: orgOpt,
+    orgTxt: orgTxt,
+    explain: explain
+  });
+});
+
+require("./config/error-handler")(app);
 // serve the files out of ./public as our main files
 app.use(express.static(__dirname + '/public'));
 
