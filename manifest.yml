@@ -1,0 +1,6 @@
+---
+applications:
+- name: WomenWorkshop2017Arg
+  memory: 512M
+  buildpack: https://github.com/cloudfoundry/buildpack-nodejs.git
+  command: node app.js

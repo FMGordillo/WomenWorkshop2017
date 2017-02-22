@@ -52,8 +52,8 @@ $(document).ready(function() {
       var errors = validator.numberOfInvalids();
       if (errors) {
         var message = errors == 1
-          ? 'Hay un campo con error. Por favor, verifique.'
-          : 'Hay ' + errors + ' campos con errores. Por favor, verifique.';
+          ? 'Hay un campo vacío, o con error. Por favor, verifique.'
+          : 'Hay ' + errors + ' campos vacíos, o con errores. Por favor, verifique.';
         $("div.alert.alert-warning").text(message).css("color", "black");
         $('html, body').animate({ scrollTop: 0 }, 'slow');
         $("div.alert.alert-warning").show();
