@@ -1,7 +1,7 @@
 var express = require('express'),
-  cfenv = require('cfenv'),
   app = express()
-  Cloudant  = require("cloudant");
+  Cloudant  = require("cloudant"),
+  cfenv = require('./cfenv-wrapper');
 require("./config/express")(app);
 require('dotenv').load();
 var appEnv = cfenv.getAppEnv();
@@ -22,8 +22,8 @@ var usernameDb="",
 
 if(process.env.VCAP_SERVICES) {
   usernameDb=appEnv.getServiceCreds('TuTalentoOculto-cloudantNoSQLDB').username;
-  usernameAPIDb=appEnv.getServiceCreds('TuTalentoOculto-cloudantNoSQLDB').apikey;
-  passwordAPIDb=appEnv.getServiceCreds('TuTalentoOculto-cloudantNoSQLDB').apipw;
+  usernameAPIDb=appEnv.getEnvVar('Db_APIKEY');
+  passwordAPIDb=appEnv.getEnvVar('Db_APIPW');
 } else {
   usernameDb= process.env.CLOUDANT_USERNAME;
   usernameAPIDb=process.env.CLOUDANT_APIKEY;
