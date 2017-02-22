@@ -28,6 +28,7 @@
     "express": "^4.14.1",
     "express-secure-only": "^0.2.1",
     "helmet": "^3.4.0",
+    "nodemon": "^1.11.0",
     "serve-index": "^1.8.0"
   }
 }
