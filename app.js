@@ -45,9 +45,15 @@ var cloudant = Cloudant({
 
 app.get("/", function(req, res) {
   res.render("index", {
-    title: "Women Workshop",
+    title: "Women Workshop"
   });
 });
+
+app.get("/personalidad", function(req, res) {
+  res.render("personalidad"), {
+    title: "Personalidad TEST"
+  }
+})
 
 app.post("/response", function(req, res, next) {
   var name = req.body.inputName,
