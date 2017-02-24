@@ -1,18 +1,33 @@
-var express = require('express'),
-  app = express()
-  Cloudant  = require("cloudant"),
-  cfenv = require('./cfenv-wrapper');
-require("./config/express")(app);
 require('dotenv').load();
+var express = require('express'),
+    app = express()
+    Cloudant  = require("cloudant"),
+    cfenv = require('./cfenv-wrapper'),
+    helper = require('sendgrid').mail,
+    sg = require('sendgrid')(process.env.SENDGRID_API_KEY);;
+require("./config/express")(app);
 var appEnv = cfenv.getAppEnv();
 
 console.log(process.argv.join(" "));
 
 // DON'T MODIFY all above **********************************************
 
+var from_email = new helper.Email('test@example.com'),
+    to_email = new helper.Email('golanlf@ar.ibm.com'),
+    subject = 'Hello World from the SendGrid Node.js Library!',
+    content = new helper.Content('text/plain', 'Hello, Email!'),
+    mail = new helper.Mail(from_email, subject, to_email, content);
+
 app.set("testDb", true);
 
 // DON'T MODIFY all below **********************************************
+
+// MAIL HELPER
+var request = sg.emptyRequest({
+  method: 'POST',
+  path: '/v3/mail/send',
+  body: mail.toJSON(),
+});
 
 var usernameDb="",
   passwordDb="",
@@ -78,6 +93,13 @@ app.post("/response", function(req, res, next) {
       }
       console.log("all records inserted.")
       console.log(bodyDb);
+    });
+
+    // MAIL SENDED
+    sg.API(request, function(error, response) {
+      console.log(response.statusCode);
+      console.log(response.body);
+      console.log(response.headers);
     });
 
   res.render("response", {
