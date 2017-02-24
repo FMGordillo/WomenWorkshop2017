@@ -1,4 +1,4 @@
-# WomenWorkshop2017
+# WomenWorkshop2017 [![Build Status](https://travis-ci.org/FMGordillo/WomenWorkshop2017.svg?branch=master)](https://travis-ci.org/FMGordillo/WomenWorkshop2017)
 
 One Paragraph of project description goes here
 
