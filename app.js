@@ -4,9 +4,14 @@ var express = require('express'),
     Cloudant  = require("cloudant"),
     cfenv = require('./cfenv-wrapper'),
     helper = require('sendgrid').mail,
-    sg = require('sendgrid')(process.env.SENDGRID_API_KEY);;
+    sg = require('sendgrid')(process.env.SENDGRID_API_KEY),
+    session = require('express-session'),
+    cookieParser = require('cookie-parser');
 require("./config/express")(app);
 var appEnv = cfenv.getAppEnv();
+
+app.use(cookieParser());
+app.use(session({resave: 'true', saveUninitialized: 'true' , secret: 'keyboard cat'}));
 
 console.log(process.argv.join(" "));
 
@@ -26,6 +31,7 @@ app.set("testDb", true);
 
 var usernameDb="",
   passwordDb="",
+  userAceptado="",
   dbname="women-2017",
   d = new Date(),
   date =  d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
@@ -34,10 +40,12 @@ if(process.env.VCAP_SERVICES) {
   usernameDb=appEnv.getServiceCreds('TuTalentoOculto-cloudantNoSQLDB').username;
   usernameAPIDb=appEnv.getEnvVar('Db_APIKEY');
   passwordAPIDb=appEnv.getEnvVar('Db_APIPW');
+  userAceptado=appEnv.getEnvVar('USER_ADMIN');
 } else {
   usernameDb= process.env.CLOUDANT_USERNAME;
   usernameAPIDb=process.env.CLOUDANT_APIKEY;
   passwordAPIDb= process.env.CLOUDANT_APIPW;
+  userAceptado= process.env.USER_ADMIN;
 }
 
 var cloudant = Cloudant({
@@ -59,10 +67,21 @@ app.get("/", function(req, res) {
   });
 });
 
+app.get("/loginStats", function(req,res) {
+  res.render("loginStats")
+})
+
+app.post("/statsPage", function(req, res) {
+  console.log(req.body.Username);
+  if (req.body.Username != userAceptado) {
+    res.redirect('/loginStats');
+  } else {
+    res.render("statsPage");
+  }
+})
+
 app.get("/personalidad", function(req, res) {
   var id = req.query.id;
-
-  HOLA
 
   res.render("personalidad"), {
     title: "Personalidad TEST"
