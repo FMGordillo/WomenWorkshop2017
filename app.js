@@ -10,24 +10,19 @@ var appEnv = cfenv.getAppEnv();
 
 console.log(process.argv.join(" "));
 
-// DON'T MODIFY all above **********************************************
+// *****************************************************************************
+// DON'T MODIFY all above ******************************************************
+// *****************************************************************************
 
 var from_email = new helper.Email('test@example.com'),
-    to_email = new helper.Email('golanlf@ar.ibm.com'),
-    subject = 'Hello World from the SendGrid Node.js Library!',
-    content = new helper.Content('text/plain', 'Hello, Email!'),
-    mail = new helper.Mail(from_email, subject, to_email, content);
+    subject = '[#WomenWorkshop TEST] CORREO DE PRUEBA',
+    content = new helper.Content('text/plain', 'MAIL DE PRUEBA NO VÁLIDO PARA PRODUCCIÓN');
 
 app.set("testDb", true);
 
-// DON'T MODIFY all below **********************************************
-
-// MAIL HELPER
-var request = sg.emptyRequest({
-  method: 'POST',
-  path: '/v3/mail/send',
-  body: mail.toJSON(),
-});
+// *****************************************************************************
+// DON'T MODIFY all below ******************************************************
+// *****************************************************************************
 
 var usernameDb="",
   passwordDb="",
@@ -65,6 +60,10 @@ app.get("/", function(req, res) {
 });
 
 app.get("/personalidad", function(req, res) {
+  var id = req.query.id;
+
+  HOLA
+
   res.render("personalidad"), {
     title: "Personalidad TEST"
   }
@@ -73,18 +72,27 @@ app.get("/personalidad", function(req, res) {
 app.post("/response", function(req, res, next) {
   var name = req.body.inputName,
   email = req.body.inputEmail,
-  orgOpt = req.body.optionsRadios,
   orgTxt = req.body.inputOrg,
   explain = req.body.inputExplain;
+
+  // MAIL HELPER
+  var to_email = new helper.Email(email),
+      mail = new helper.Mail(from_email, subject, to_email, content);
+
+  var request = sg.emptyRequest({
+    method: 'POST',
+    path: '/v3/mail/send',
+    body: mail.toJSON(),
+  });
 
   app.womendb.insert(
     {
       'name': name,
       'email': email,
-      'orgOption': orgOpt,
+      'validado': false,
       'orgText': orgTxt,
       'explaination': explain,
-      'date': date
+      'date': date,
 
     }, function(errDb,bodyDb,headerDb) {
       if(errDb) {
@@ -97,16 +105,21 @@ app.post("/response", function(req, res, next) {
 
     // MAIL SENDED
     sg.API(request, function(error, response) {
-      console.log(response.statusCode);
-      console.log(response.body);
-      console.log(response.headers);
+      if(error) {
+        console.log(error);
+        console.log('FIN ERROR')
+      } else {
+        console.log(response.statusCode);
+        console.log(response.body);
+        console.log(response.headers);
+        console.log('FIN EXITO')
+      }
     });
 
   res.render("response", {
     title: "¡Muchas gracias!",
     name: name,
     email: email,
-    orgOpt: orgOpt,
     orgTxt: orgTxt,
     explain: explain
   });
