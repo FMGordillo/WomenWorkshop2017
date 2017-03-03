@@ -14,8 +14,50 @@
       <div class="container">
         <div class="row text-center">
           <div class="col-md-12">
-            <i class="fa fa-5x fa-angellist fa-fw fa-spin text-primary"></i>
+            <i class="fa fa-5x fa-pagelines fa-fw fa-spin text-primary"></i>
+            <br>
+            <br>
+            <br>
           </div>
+
+          <% if(results.length) {%>
+            <table class="table table-striped">
+            <tr>
+              <th>_id</th>
+              <th>_rev</th>
+              <th>Nombre</th>
+              <th>Mail</th>
+              <th>Organizacion</th>
+              <th>Razon</th>
+              <th>Fecha</th>
+              <th>Validar</th>
+            </tr>
+              <% results.forEach(function(row) { %>
+                <form action="/statsOK" method="post">
+                  <tr>
+                    <td><input hidden name="id" value="<%= row._id %>"></td>
+                    <td><input hidden name="rev" value="<%= row._rev %>"></td>
+                    <td><input hidden name="name" value="<%= row.name %>"><%= row.name %></td>
+                    <td><input hidden name="email" value="<%= row.email %>"><%= row.email %></td>
+                    <td><input hidden name="orgText" value="<%= row.orgText %>"><%= row.orgText%></td>
+                    <td><input hidden name="explaination" value="<%= row.explaination %>"><%= row.explaination %></td>
+                    <td><input hidden name="date" value="<%= row.date %>"><%= row.date %></td>
+                    <% if(row.validado == false){ %>
+                      <td>
+                        <button type="submit" class="btn btn-small btn-danger"> ¿Validar usuario?
+                      </td>
+                      <% } else if (row.validado == true){ %>
+                      <td>
+                        <button class="btn btn-small btn-success" disabled> Usuario validado
+                      </td>
+                      <% } else { %>
+                      <td>No Data</td>
+                      <% } %>
+                  </tr>
+                </form>
+              <% }) %>
+              </table>
+          <% } %>
         </div>
       </div>
     </div>

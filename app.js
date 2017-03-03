@@ -71,14 +71,89 @@ app.get("/loginStats", function(req,res) {
   res.render("loginStats")
 })
 
-app.post("/statsPage", function(req, res) {
-  console.log(req.body.Username);
+app.get("/statsPage", function(req, res) {
   if (req.body.Username != userAceptado) {
-    res.redirect('/loginStats');
+    res.redirect('loginStats');
   } else {
-    res.render("statsPage");
+      res.send("TODO OK");
+    }
+}); // -- end get /statsPage
+
+app.post("/statsPage", function(req, res) {
+  if (req.body.Username != userAceptado) {
+    res.redirect('loginStats');
+  } else {
+    // Obteniendo todos los registros, sin filtro
+    app.womendb.find({selector: {_id:{ "$gt": 0}}}, function(err, body) {
+      if(err) {
+        console.log(err);
+        return;
+      }
+      res.render("statsPage", {
+        results: body.docs
+      });
+    });
   }
-})
+}); // fin /statsPage
+
+app.post("/statsOK", function(req, res) {
+
+  var isValidado = true;
+
+  var updateUsuario = {
+    "_id": req.body.id,
+    "_rev": req.body.rev,
+    "name": req.body.name,
+    "email": req.body.email,
+    "validado": isValidado,
+    "orgText": req.body.orgText,
+    "explaination": req.body.explaination,
+    "date": req.body.date
+  }
+
+  var nombre = req.body.name,
+      email = req.body.email;
+
+  function updateUser(is) {
+
+  }
+
+  app.womendb.insert(updateUsuario, function(err, body) {
+    if(err){
+      res.render("statsOK", {
+        message:"Error al validar al usuario. La Base de Datos no esta funcionando!"
+      });
+      return;
+    } else { // si todo salio bien... INTENTAMOS EL MAIL
+
+      // MAIL HELPER
+      var to_email = new helper.Email(email),
+          mail = new helper.Mail(from_email, subject, to_email, content);
+
+      var request = sg.emptyRequest({
+        method: 'POST',
+        path: '/v3/mail/send',
+        body: mail.toJSON(),
+      });
+
+      // MAIL SENDED
+      sg.API(request, function(error, response) {
+        if(error) {
+          console.log(error);
+          res.render("statsOK", {
+            message: "Mail fallo. Intente nuevamente. Mas detalles: " + error
+          });
+        } else {
+          res.render("statsOK", {
+            message:"¡Usuario validado y mail enviado! Vuelva y siga validando"
+          }) // -- fin Render
+          console.log('FIN EXITO')
+        }
+      });
+    }
+  }); // -- fin DB Insert
+
+}); // -- fin post /statsOK
 
 app.get("/personalidad", function(req, res) {
   var id = req.query.id;
@@ -93,16 +168,6 @@ app.post("/response", function(req, res, next) {
   email = req.body.inputEmail,
   orgTxt = req.body.inputOrg,
   explain = req.body.inputExplain;
-
-  // MAIL HELPER
-  var to_email = new helper.Email(email),
-      mail = new helper.Mail(from_email, subject, to_email, content);
-
-  var request = sg.emptyRequest({
-    method: 'POST',
-    path: '/v3/mail/send',
-    body: mail.toJSON(),
-  });
 
   app.womendb.insert(
     {
@@ -119,20 +184,6 @@ app.post("/response", function(req, res, next) {
         return;
       }
       console.log("all records inserted.")
-      console.log(bodyDb);
-    });
-
-    // MAIL SENDED
-    sg.API(request, function(error, response) {
-      if(error) {
-        console.log(error);
-        console.log('FIN ERROR')
-      } else {
-        console.log(response.statusCode);
-        console.log(response.body);
-        console.log(response.headers);
-        console.log('FIN EXITO')
-      }
     });
 
   res.render("response", {
