@@ -8,21 +8,25 @@
       .error {
         color: red;
       }
-      #myModal {
-        color: black;
+      h3 {
+        font-family: "Tahoma", Times, sans-serif;
+        font-size: 25px;
       }
     </style>
   </head>
   <body>
     <div class="cover" style="opacity: 0.85">
       <div class="cover-image" style="background-image : url('/img/background2.jpg')"></div>
-      <div class="container" style="padding: 50px; margin-top: 50px; margin-bottom: 50px; margin-left:200px; margin-right:200px; background-color: rgb(247,247,249);">
+      <div class="container" style="padding: 50px; margin-top: 50px; margin-bottom: 50px; background-color: rgb(247,247,249);">
         <div class="alert alert-warning" role="alert" hidden></div>
         <div class="row">
           <div class="col-md-12">
-            <h1 class="text-center" style="padding-bottom:20;">Descubrí tus Talentos Workshop</h1>
+            <h1 class="text-center">Descubrí tus Talentos Workshop</h1>
             <h2 class="text-center" style="padding-bottom:20;">Taller de Talento y Marca Personal para mujeres emprendedoras.</h2>
-			<h3 class="text-center" style="padding-bottom:20; font-weight: bold;">Jueves 16 de marzo de 14 a 18:30hs en el Auditorio Mayor de IBM Argentina, Ingeniero Butty 275, 1º Subsuelo, CABA.</h3>
+            <div class="bg-info">
+  			      <h3 class="text-center" style="padding-top:20;">Jueves 16 de marzo de 14 a 18:30hs</h3>
+              <h3 class="text-center" style="padding-bottom:20;">Auditorio Mayor de IBM Argentina, Ingeniero Butty 275, 1º Subsuelo, CABA.</h3>
+            </div>
           </div>
         </div>
         <div class="row">
@@ -73,40 +77,11 @@
               <div class="col-md-12">
                 <!-- <a id="mainBtn" class="active btn btn-block btn-lg btn-primary" data-toggle="modal" data-target="#myModal">Enviar</a> -->
                 <button id="mainBtn" type="submit" class="btn btn-block btn-lg btn-primary">Enviar</button>
+                <p style="font-size: 14px;" class="text-center">Al enviar este formulario acepto que IBM pueda procesar mis datos de la forma indicada anteriormente, y tal como describe en la declaraci&oacute;n de Privacidad de IBM (<a href="https://www.ibm.com/privay/ar/es">https://www.ibm.com/privay/ar/es</a>)</p>
               </div>
             </div>
           </form>
         </div>
-        </div>
-      </div>
-    </div>
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
-            <h4 class="modal-title" id="myModalLabel" style="color: black;">Términos de Uso</h4>
-          </div>
-          <div class="modal-body">
-            <p>Este Acuerdo establece los términos y condiciones que rigen el uso de la aplicación Women-Workshop-2017 ("la Aplicación"). Mediante el uso de la Aplicación, usted acepta estas Condiciones de Uso; <b>si usted no está de acuerdo con estos Términos de Uso, no utilice esta Aplicación</b>.<br>
-              <br>
-              La Aplicación está disponible para usted de manera exclusiva, por International Business Machines Corporation ("IBM"), sin cargo a través de una conexión a Internet proporcionada por usted.<br>
-              <br>
-              La Aplicación y cualquier software relacionado, documentación, contenido u otros materiales proporcionados por IBM en relación con la Aplicación son propiedad de IBM o de un tercero, y tienen derechos de autor y de licencia, no vendidos. No se permite la transferencia de sus derechos en virtud del presente Acuerdo.<br>
-              <br>
-              Usted está autorizado a utilizar la Aplicación y el contenido asociado para uso personal y <b>sólo para fines informativos</b>. La Aplicación no está destinada a ser utilizada con fines de producción o comerciales, no estando permitidos esos usos. IBM o sus proveedores no tienen la obligación de revisar, filtrar, comprobar, editar o eliminar cualquier contenido. Sin embargo, IBM o sus proveedores podrán hacerlo a su entera discreción.<br>
-              <br>
-              El uso de la Aplicación está también sujeto a la Declaración de Privacidad Online de IBM, disponible en <a href="http://www.ibm.com/privacy/ar/es/">http://www.ibm.com/privacy/ar/es/</a><br>
-              <br>
-              La Aplicación puede no estar disponible durante el mantenimiento programado determinado por IBM, y pueden producirse otros cortes por tiempos regulares y no regulares. Cualquiera de las partes podrá dar por terminado el uso o el acceso a la Aplicación en cualquier momento.<br>
-              <br>
-            </p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default">Cerrar</button>
-            <button type="button" class="btn btn-primary" data-dismiss="modal">Acepto los términos y condiciones</button>
-          </div>
         </div>
       </div>
     </div>
@@ -115,12 +90,5 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/js/validator.js"></script>
-    <script type="text/javascript">
-      $(window).on("load", function(){
-        $('#myModal').modal({backdrop: 'static', keyboard: false});
-        $('#myModal').modal('show');
-     });
-    </script>
-
 </body>
 </html>
