@@ -1,39 +1,117 @@
-<!--<$ include partials/header $> -->
+<!DOCTYPE html>
+<html lang="<$= locale $>">
+<head>
+  <title><$= __("page-title-pi") $></title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="og:title" content="IBM Watson Personality Insights">
+  <meta name="og:description" content="Gain insight into how and why people think, act, and feel the way they do. This service applies linguistic analytics and personality theory to infer attributes from a person's unstructured text.">
+  <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <!-- top level heading -->
+  <header class="_demo--heading">
+    <div class="_demo--container">
+      <a class="wordmark" href="http://www.ibm.com/watson/developercloud/">
+        <span class="wordmark--left"><$= __("header-ibm") $></span>
+        <span class="wordmark--right"><$= __("header-wdc") $></span>
+      </a>
+      <nav class="heading-nav" role="menubar">
+        <li class="base--li heading-nav--li" role="presentation">
+          <a class="heading-nav--item" href="http://www.ibm.com/watson/developercloud/services-catalog.html" role="menuitem">
+          <$= __("header-services") $>
+        </a>
+        </li>
+        <li class="base--li heading-nav--li" role="presentation">
+          <a class="heading-nav--item" href="http://www.ibm.com/watson/developercloud/doc/" role="menuitem">
+          <$= __("header-docs") $>
+        </a>
+        </li>
+        <li class="base--li heading-nav--li" role="presentation">
+          <a class="heading-nav--item" href="http://www.ibm.com/watson/developercloud/starter-kits.html" role="menuitem">
+          <$= __("header-starterkit") $>
+        </a>
+        </li>
+        <li class="base--li heading-nav--li" role="presentation">
+          <a class="heading-nav--item" href="https://developer.ibm.com/watson/" role="menuitem">
+          <$= __("header-community") $>
+        </a>
+        </li>
+      </nav>
+    </div>
+  </header>
+  <div class="_demo--banner">
+    <div class="_demo--container">
+      <div class="banner--service-icon-container">
+        <img class="banner--service-icon" src="images/service-icon.svg" alt="Personality Insights API Icon">
+      </div>
+      <div class="banner--service-info">
+        <h1 class="banner--service-title base--h1">
+          <img class="banner--service-icon_INLINE" src="images/service-icon.svg" alt="Personality Insights API Icon"> <$= __("header-title-pi") $>
+        </h1>
+        <div class="banner--service-description">
+          <$= __("header-description") $>
+        </div>
+        <div class="banner--service-resource">
+          <span class="icon icon-link"></span>
+          <strong><$= __("header-resources") $></strong>
+        </div>
+        <div class="banner--service-links">
+          <li class="base--li banner--service-link-item">
+            <a href="http://www.ibm.com/watson/developercloud/personality-insights/api/" class="base--a"><$= __("header-apiref") $></a>
+          </li>
+          <li class="base--li banner--service-link-item">
+            <a href="http://www.ibm.com/watson/developercloud/doc/personality-insights/" class="base--a"><$= __("header-documentation") $></a>
+          </li>
+          <li class="base--li banner--service-link-item">
+            <a href="https://github.com/watson-developer-cloud/personality-insights-nodejs" class="base--a"><$= __("header-fork") $></a>
+          </li>
+          <li class="base--li banner--service-link-item">
+            <a href="https://console.ng.bluemix.net/registration/?target=/catalog/services/personality-insights/" class="base--button base--button_fill"><$= __("header-bluemix") $></a>
+          </li>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="_demo--container">
     <div class="_content input">
       <h2 class="base--h2">
-        <!--<$= __("intro-title") $>-->
+        <$= __("intro-title") $>
       </h2>
       <p class="base--p">
-        <!-- <$= __("intro-1") $> -->
+        <$= __("intro-1") $>
       </p>
       <p class="base--p">
-        <!-- <$= __("intro-4") $> -->
+        <$= __("intro-4") $>
       </p>
       <div class="tab-panels" role="tabpanel">
         <span class="input--reset icon-hyperlink">
           <span class="icon icon-reset"></span>
         <button class="base--a icon-hyperlink--button icon-hyperlink--button_BLANK input--reset-button" href="" type="reset">
-            <!-- <$= __("button-reset") $> -->
+            <$= __("button-reset") $>
           </button> |
         <a class="base--a" href="/terms-of-use">
-          <!-- <$= __("button-terms") $> -->
+          <$= __("button-terms") $>
         </a>
         </span>
         <ul class="tab-panels--tab-list" role="tablist">
           <li class="tab-panels--tab-list-item base--li" role="presentation">
             <a class="tab-panels--tab base--a active" href="#twitter-panel" aria-controls="twitter-panel" role="tab">
-              <!-- <$= __("tab-tweets") $> -->
+              <$= __("tab-tweets") $>
             </a>
           </li>
           <li class="tab-panels--tab-list-item base--li" role="presentation">
             <a class="tab-panels--tab base--a" href="#text-panel" aria-controls="text-panel" role="tab">
-              <!-- <$= __("tab-body") $> -->
+              <$= __("tab-body") $>
             </a>
           </li>
           <li class="tab-panels--tab-list-item base--li" style="<% if (showTwitterButton) { %>display: none;<% } %>" role="presentation">
             <a class="tab-panels--tab base--a" id="self-analysis-tab" href="#your-twitter-panel" aria-controls="text-panel" role="tab">
-              <!-- <$= __("tab-twitter") $> -->
+              <$= __("tab-twitter") $>
             </a>
           </li>
         </ul>
@@ -42,7 +120,7 @@
             <form class="input--form1">
 
               <div class="base--h5 input--choose">
-               <!-- <$= __("option-choose") $> -->
+                <$= __("option-choose") $>
               </div>
 
               <input role="radio" class="base--radio" type="radio" id="twitter-Oprah" name="twitter" value="Oprah" data-lang="en">
@@ -78,7 +156,7 @@
             <form class="input--form2">
 
               <div class="base--h5 input--choose">
-                <!-- <$= __("option-choose") $> -->
+                <$= __("option-choose") $>
               </div>
 
               <input role="radio" class="base--radio" type="radio" id="text-sample1" name="text-sample" data-file="sample1" data-lang="en" data-orientation="" />
@@ -98,7 +176,7 @@
               <div class="input--button-container">
                 <div id="languageChooser" class="input--language-chooser smartphone-hidden" style="display:none">
                   <div class="base--h5 input--choose">
-                    <!-- <$= __("option-chooselang") $> -->
+                    <$= __("option-chooselang") $>
                   </div>
 
                   <input role="radio" class="base--radio" type="radio" id="lang-en" name="text-lang" value="en" />
@@ -119,12 +197,12 @@
             <form class="input--form3 auth-form" method='get' action='/auth/twitter'>
               <p class="base--p" style="text-align:center"><button type="submit" class="base--button input--submit-button3"><$= __("button-analyzetwitter") $></button></p>
               <p class="base--p"><strong><$= __("note-title") $></strong>
-                <!-- <$= __("note-twitter") $> -->
+                <$= __("note-twitter") $>
                   <p>
             </form>
             <form class="input-form4 analysis-form" style="display:none">
               <div class="base--h5 input--choose">
-                <!-- <$= __("analysis-title") $> -->
+                <$= __("analysis-title") $>
               </div>
               <input role="radio" class="base--radio" type="radio" id="my-twitter" name="twitter" value="myself">
               <label class="base--inline-label input--radio" for="my-twitter">
@@ -147,18 +225,18 @@
         </div>
         <div class="error">
           <p class="error--message">
-            <!-- <$= __("message-error") $> -->
+            <$= __("message-error") $>
           </p>
         </div>
         <div class="output">
           <p class="base--p">
-            <!-- <$= __("disclaimer-1") $> -->
+            <$= __("disclaimer-1") $>
           </p>
           <p class="base--p">
             <a class="base--a" href="http://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/doc/personality-insights/inout.shtml#outputStats" target="_blank">
-              <!-- <$= __("disclaimer-2") $> -->
+              <$= __("disclaimer-2") $>
             </a>
-            <!-- <$= __("disclaimer-3") $> -->
+            <$= __("disclaimer-3") $>
           </p>
           <h2 class="base--h2"><$= __("title-personality") $></h2>
           <h4 class="base--h4 output--word-count-header"><span class="output--word-count-number">0</span> <$= __("label-wordsanalyzed") $>
@@ -192,7 +270,7 @@
               <h4 class="base--h4"><$= __("title-summary") $></h4>
               <div id="personalitySummary" class="output-summary--summary">
                 <p class="base--p">
-                  <!-- <$= __("label-summary") $> -->
+                  <$= __("label-summary") $>
                 </p>
               </div>
               <a class="base--a output-summary--summary-link" href="http://www.ibm.com/watson/developercloud/doc/personality-insights/science.shtml" target="_blank"><$= __("button-how") $></a>
@@ -212,14 +290,14 @@
             <div class="output-big-5 output-stats-column">
               <h4 class="base--h4"><$= __("results-personality") $></h4>
               <div class="output-stats-column--percentile-label">*% =
-                <!-- <$= __("label-percentile") $> -->
+                <$= __("label-percentile") $>
               </div>
               <div class="output-big-5--traits output-stats-column--traits"></div>
             </div>
             <div class="output-needs output-stats-column">
               <h4 class="base--h4"><$= __("results-needs") $></h4>
               <div class="output-stats-column--percentile-label">*% =
-                <!-- <$= __("label-percentile") $> -->
+                <$= __("label-percentile") $>
               </div>
               <div class="output-needs--traits output-stats-column--traits"></div>
               <div class="output-needs--more-traits"></div>
@@ -228,7 +306,7 @@
             <div class="output-values output-stats-column">
               <h4 class="base--h4"><$= __("results-values") $></h4>
               <div class="output-stats-column--percentile-label">*% =
-                <!-- <$= __("label-percentile") $> -->
+                <$= __("label-percentile") $>
               </div>
               <div class="output-values--traits output-stats-column--traits"></div>
             </div>
@@ -236,7 +314,7 @@
           <span class="icon-hyperlink output--json-hyperlink">
             <span class="icon icon-code"></span>
           <button class="base--a icon-hyperlink--button icon-hyperlink--button_BLANK output--json-button" href="">
-              <!-- <$= __("button-json") $> -->
+              <$= __("button-json") $>
             </button>
           </span>
           <div class="output--json">
@@ -244,14 +322,14 @@
             <pre class="base--pre language-javascript output--json-pre"><code class="base--code language-javascript output--json-code code--json"></code></pre>
           </div>
           <p class="base--p output--more-science">
-            <!-- <$= __("label-whatelse") $> -->
+            <$= __("label-whatelse") $>
               <br>
               <a class="base--a" onclick="postSunburstRequest()" href="javascript:void(0);">
-                <!-- <$= __("button-sunburst") $> -->
+                <$= __("button-sunburst") $>
               </a>.
               <br>
               <a class="base--a" href="https://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/doc/personality-insights/science.shtml" target="_blank">
-                <!-- <$= __("button-science") $> -->
+                <$= __("button-science") $>
               </a>.
           </p>
         </div>
@@ -261,23 +339,23 @@
 
 
   <script type="text/html" id="big5PercentTemplate">
-    <!-- <% _.each(items, function(item, key, list) { %> -->
-      <!-- <% if (typeof list[key - 1] != 'undefined' && (list[key - 1].score >= 50 && item.score < 50)) { %> -->
+    <% _.each(items, function(item, key, list) { %>
+      <% if (typeof list[key - 1] != 'undefined' && (list[key - 1].score >= 50 && item.score < 50)) { %>
         <hr class="base--hr output-stats-column--hr">
-        <!-- <% } %> -->
+        <% } %>
           <div class="percent-bar-and-score">
-            <!-- <div class="percent-bar-and-score--label output-big-5--trait-label <%= (item.score >= 50) ? 'output-big-5--trait-label_POSITIVE' : 'output-big-5--trait-label_NEGATIVE' %>"> -->
-              <!-- <%= item.name %> -->
+            <div class="percent-bar-and-score--label output-big-5--trait-label <%= (item.score >= 50) ? 'output-big-5--trait-label_POSITIVE' : 'output-big-5--trait-label_NEGATIVE' %>">
+              <%= item.name %>
                 <i class="icon icon-down-arrow percent-bar-and-score--toggle-icon"></i>
                 <div class="tooltip">
-                  <!-- <%= tooltips(item.id) || '<$= __('tooltip-not-available') $>' %> -->
+                  <%= tooltips(item.id) || '<$= __('tooltip-not-available') $>' %>
                 </div>
             </div>
             <div class="percent-bar percent-bar-and-score--percent-bar">
               <div class="percent-bar--meter" style="-webkit-transform: translate(<%= item.score %>%); transform: translate(<%= item.score %>%)">
                 <div class="percent-bar--ball <%= (item.score >= 50) ? 'percent-bar--ball_POSITIVE-FILL' : 'percent-bar--ball_NEGATIVE-FILL' %>"></div>
                 <div class="percent-bar-and-score--number">
-                  <!-- <%= item.score %>%</div> -->
+                  <%= item.score %>%</div>
               </div>
             </div>
           </div>
@@ -294,13 +372,13 @@
                   <div class="percent-bar--meter" style="-webkit-transform: translate(<%= item.score %>%); transform: translate(<%= item2.score %>%)">
                     <div class="percent-bar--ball <%= (item2.score >= 50) ? 'percent-bar--ball_POSITIVE-FILL' : 'percent-bar--ball_NEGATIVE-FILL' %>"></div>
                     <div class="percent-bar-and-score--number">
-                      <!-- <%= item2.score %>%</div> -->
+                      <%= item2.score %>%</div>
                   </div>
                 </div>
               </div>
-              <!-- <% }); %> -->
+              <% }); %>
           </div>
-          <!-- <% });%> -->
+          <% });%>
   </script>
 
   <script type="text/html" id="outputStatsPercentTemplate">

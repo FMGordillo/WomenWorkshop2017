@@ -1,0 +1,123 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css"
+    rel="stylesheet" type="text/css">
+    <link href="https://pingendo.github.io/pingendo-bootstrap/themes/default/bootstrap.css"
+    rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <div class="section">
+      <div class="container-fluid">
+        <div class="row text-center">
+          <div class="col-md-12">
+            <h1>Env&iacute;o de mails</h1>
+            <h2>Notas a considerar: </h2>
+            <p>1. Luego de validar, o enviar un mail, <b>siempre</b> hacer clic en el botón de abajo dos veces. A veces los resultados no se muestran "al toque".</p>
+            <p>2. Si enviste mail, y no validaste al usuario, el usuario <b>no podr&aacute;</b> validarse nuevamente.</p>
+            <p>3. Si validaste al usuario, no podr&aacute;s "rechazarlo". Valid&aacute; con responsabilidad.</p>
+            <p>4. Ante cualquier problema, comun&iacute;quese con famargor@ar.ibm.com</p>
+            <br>
+            <i class="fa fa-5x fa-pagelines fa-fw fa-spin text-primary"></i>
+            <br>
+            <br>
+            <form action="stats" method="post">
+              <input hidden type="text" name="Username" value="CaritoQ">
+              <button class="btn btn-primary" type="submit">Ir a la ventana "Validar usuarios"</button>
+            </form>
+            <br>
+          </div>
+            <table class="table table-striped">
+            <tr>
+              <th></th>
+              <th></th>
+              <th>Nombre</th>
+              <th>Mail</th>
+              <th>Organizacion</th>
+              <th>Razon</th>
+              <th>Fecha</th>
+              <th></th>
+            </tr>
+            <% if(results.length) { results.forEach(function (row) { %>
+                <form id="form" action="/statsOK" method="post">
+                  <tr>
+                    <td><input hidden name="id" value="<%= row._id %>"></td>
+                    <td><input hidden name="rev" value="<%= row._rev %>"></td>
+                    <td><input hidden name="name" value="<%= row.name %>"><%= row.name %></td>
+                    <td><input hidden name="email" value="<%= row.email %>"><%= row.email %></td>
+                    <td><input hidden name="orgText" value="<%= row.orgText %>"><%= row.orgText%></td>
+                    <td><input hidden name="explaination" value="<%= row.explaination %>"><%= row.explaination %></td>
+                    <td><input hidden name="date" value="<%= row.date %>"><%= row.date %></td>
+                    <td><input hidden name="validado" value="<%= row.validado %>"></td>
+                    <td><input hidden name="mailEnviado" value="<%= row.mailEnviado %>"></td>
+
+                    <!--  SI NO ES VALIDADO... -->
+                    <% if(row.validado == false ) { if(row.mailEnviado == false) { %>
+                      <td>
+                        <input hidden name="valorBoton" value="enviarMailReject">
+                        <button type="submit" class="btn btn-small btn-danger">Enviar mail
+                      </td>
+                      <% } else { %>
+                        <td>
+                          <input hidden name="valorBoton" value="mailEnviadoReject">
+                          <button type="submit" class="btn btn-small btn-danger" disabled>Mail enviado
+                        </td>
+                        <!-- ...EN CAMBIO, SI ES VALIDADO...  -->
+                        <% } %>
+                      <% } else if (row.validado == true) { if(row.mailEnviado == false) { %>
+                      <td>
+                        <input hidden name="valorBoton" value="enviarMailApproved">
+                        <button class="btn btn-small btn-success">Enviar mail
+                      </td>
+                      <% } else { %>
+                        <td>
+                          <input hidden name="valorBoton" value="mailEnviadoApproved">
+                          <button type="submit" class="btn btn-small btn-success" disabled>Mail enviado
+                        </td>
+                      <% } %>
+                      <% } else { %>
+                      <td>No hay datos</td>
+                      <% } %>
+                  </tr>
+                </form>
+                <% })} %>
+              </table>
+        </div>
+      </div>
+    </div>
+    <script>
+    $("#enviarMailRechazo").click(function() {
+      $("#form").submit(function(e) {
+        var url = "/statsSendMail"
+        $.ajax({
+          type: "POST",
+          url: url,
+          data: $("#form").serialize(),
+          success: function(data) {
+            alert("TODO BIEN!!");
+          }
+        });
+        e.preventDefault();
+      });
+    });
+    $("#enviarMailValidacion").click(function() {
+      $("#form").submit(function(e) {
+        var url = "/statsSendMail"
+        $.ajax({
+          type: "POST",
+          url: url,
+          data: $("#form").serialize(),
+          success: function(data) {
+            alert("TODO BIEN!!");
+          }
+        });
+        e.preventDefault();
+      });
+    });
+    </script>
+  </body>
+
+</html>
