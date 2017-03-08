@@ -10,7 +10,7 @@ exports.sendMail = function(from, subject, to_mail, content) {
   var from_email = new helper.Email(from),
       subject = subject,
       to_email = new helper.Email(to_mail),
-      content = new helper.Content('text/plain', content),
+      content = new helper.Content('text/html', content),
       mail = new helper.Mail(from_email, subject, to_email, content);
 
   var request = sg.emptyRequest({

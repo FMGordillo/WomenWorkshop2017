@@ -22,6 +22,8 @@ const mailHelper = require('./helpers/mail-helper'),
       profileFromText = personalityHelper.profileFromText,
       adminUser = process.env.USER_ADMIN || appEnv.getEnvVar('USER_ADMIN');
 
+// import { mjml2html } from 'mjml';
+
 module.exports = (app) => {
 
   app.get("/", function(req, res) {
@@ -91,6 +93,25 @@ app.post("/stats", function(req, res) {
 
     var valorBoton = req.body.valorBoton;
 
+    var mailConfirmacion = "<h1>¡Gracias " + req.body.name + "!</h1>" +
+    "<br>" +
+    "<p>Est&aacute; confirmada tu participaci&oacute;n en el Workshop 'Descubr&iacute; tus Talentos'.</p>" +
+    "<br>" +
+    "<p>Te esperamos el pr&oacute;ximo jueves 16 de Marzo a las 14 hs en el auditorio mayor de IBM Argentina, Ingeniero Butty 275, 1er Subsuelo, CABA.</p>" +
+    "<br>" +
+    "<p>Saludos,</p>" +
+    "<p>Raquel Godoy, Gerente de Ciudadan&iacute;a Corporativa de IBM</p>" +
+    "<p>Argentina</p>";
+
+    var mailRechazo = "<h1>Estimada " + req.body.name + "</h1>" +
+    "<p>La convocatoria al Workshop 'Descubr&iacute; tus Talentos' super&oacute; las expectativas y lamentablemente no quedan cupos disponibles.</p>" +
+    "<br>" +
+    "<p>Agradecemos tu inter&eacute;s y esperamos confirmar nuevas fechas pr&oacute;ximamente.</p>" +
+    "<br>" +
+    "<p>Saludos,</p>" +
+    "<p>Raquel Godoy, Gerente de Ciudadan&iacute;a Corporativa de IBM</p>" +
+    "<p>Argentina</p>";
+
     var validado;
     var mailEnviado;
 
@@ -114,8 +135,8 @@ app.post("/stats", function(req, res) {
         explaination = req.body.explaination, // Por que estas en el evento?
         date = req.body.date;
 
-    var from = "mail@test.com",
-        subject = "TESTING 2.0";
+    var from = "ragodoy@ar.ibm.com",
+        subject = "";
 
     console.log(valorBoton);
 
@@ -127,11 +148,12 @@ app.post("/stats", function(req, res) {
       }
 
     } else if(valorBoton == "enviarMailReject") {
-      enviarMail(false, "Disculpanos " + nombre + ", no fuiste seleccionado. La proxima sera!");
+      subject = "Confirmación Workshop de Mujeres 2017 en IBM"
+      enviarMail(false, mailRechazo);
 
     } else if(valorBoton == "enviarMailApproved") {
-      enviarMail(true, "Bienivenid@ " + nombre + " al evento!");
-
+      subject = "Workshop de Mujeres 2017 en IBM"
+      enviarMail(true, mailConfirmacion);
     }
 
     function validarUsuario(isValid, isMailSent) {
