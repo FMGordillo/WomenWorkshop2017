@@ -4,7 +4,9 @@
   "description": "Website for Women Workshop 2017",
   "main": "server.js",
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha.js"
+    "run": "node server.js",
+    "test": "node node_modules/mocha/mocha.js",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
