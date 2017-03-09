@@ -1,4 +1,17 @@
 language: node_js
-node_js:
-  - "iojs"
-  - "6"
+sudo: required
+node_js: 6
+
+cache:
+  directories:
+- node_modules
+
+env:
+  global:
+  - CF_APP=personality-insights-livedemo
+  - CF_API=https://api.ng.bluemix.net
+  - CF_ORGANIZATION=WatsonPlatformServices
+  - CF_SPACE=demos
+  
+notifications:
+  email: false
