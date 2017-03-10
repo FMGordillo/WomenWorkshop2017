@@ -49,11 +49,10 @@
               <br>
               <div class="row">
                 <div class="col-md-6">
-                  <!-- <a id="mainBtn" class="active btn btn-block btn-lg btn-primary" data-toggle="modal" data-target="#myModal">Enviar</a> -->
+                  <input id="valorBoton" hidden name="valorBoton" value="">
                   <button id="sendPersonalityBtn" class="btn btn-block btn-lg btn-primary">Enviar (se guarda)</button>
                 </div>
                 <div class="col-md-6">
-                  <!-- <a id="mainBtn" class="active btn btn-block btn-lg btn-primary" data-toggle="modal" data-target="#myModal">Enviar</a> -->
                   <button id="sendTestBtn" type="submit" class="btn btn-block btn-lg btn-warning" style="color: black;">Hacer prueba (no se guarda)</button>
                 </div>
               </div>
@@ -73,5 +72,15 @@
   <script type="text/javascript" src="/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="/js/validator.js"></script>
   <script type="text/javascript" src="/js/validator-words.js"></script>
+  <script>
+  $(document).ready(function() {
+    $("#sendPersonalityBtn").click(function () {
+      $("#valorBoton").val("prod")
+    })
+    $("#sendTestBtn").click(function() {
+      $("#valorBoton").val("test")
+    })
+  })
+  </script>
 </body>
 </html>

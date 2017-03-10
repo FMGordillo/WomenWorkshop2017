@@ -99,6 +99,15 @@ app.post("/stats", (req, res) => {
   app.post("/statsOK", (req, res) => {
 
     var valorBoton = req.body.valorBoton;
+    var valorPI = req.body.valorPI;
+
+    var _id = req.body.id,
+        _rev = req.body.rev,
+        nombre = req.body.name,
+        email = req.body.email,
+        orgTxt = req.body.orgText, // Nombre de organizacion
+        explaination = req.body.explaination, // Por que estas en el evento?
+        date = req.body.date;
 
     var mailConfirmacion = "<h1>¡Gracias " + req.body.name + "!</h1>" +
     "<br>" +
@@ -111,6 +120,7 @@ app.post("/stats", (req, res) => {
     "<p>Argentina</p>";
 
     var mailRechazo = "<h1>Estimada " + req.body.name + "</h1>" +
+    "<br>" +
     "<p>La convocatoria al Workshop 'Descubr&iacute; tus Talentos' super&oacute; las expectativas y lamentablemente no quedan cupos disponibles.</p>" +
     "<br>" +
     "<p>Agradecemos tu inter&eacute;s y esperamos confirmar nuevas fechas pr&oacute;ximamente.</p>" +
@@ -119,8 +129,17 @@ app.post("/stats", (req, res) => {
     "<p>Raquel Godoy, Gerente de Ciudadan&iacute;a Corporativa de IBM</p>" +
     "<p>Argentina</p>";
 
+    var mailPI = "<h1>Estimada " + req.body.name + "</h1>" +
+    "<br>" +
+    "<p>El link para descubrir tus talentos es el siguiente: <a href='" + encodeURI("https://womenworkshop2017arg.mybluemix.net/personalidad?id=" + _id) + "'>Link para Personality Insights</a></p>" +
+    "<br>" +
+    "<p>Saludos,</p>" +
+    "<p>Raquel Godoy, Gerente de Ciudadan&iacute;a Corporativa de IBM</p>" +
+    "<p>Argentina</p>";
+
     var validado;
     var mailEnviado;
+    var quierePI = false;
 
     if(req.body.validado == true) {
       validado = true;
@@ -134,19 +153,13 @@ app.post("/stats", (req, res) => {
       mailEnviado = false;
     }
 
-    var _id = req.body.id,
-        _rev = req.body.rev,
-        nombre = req.body.name,
-        email = req.body.email,
-        orgTxt = req.body.orgText, // Nombre de organizacion
-        explaination = req.body.explaination, // Por que estas en el evento?
-        date = req.body.date;
-
     var from = "ragodoy@ar.ibm.com",
         subject = "";
 
     console.log(valorBoton);
+    console.log(valorPI)
 
+    // TODO mejorar estos metodos usando JQuery
     if(valorBoton == "usuarioAValidar") {
       if(mailEnviado == false){
         validarUsuario(true, false);
@@ -161,9 +174,16 @@ app.post("/stats", (req, res) => {
     } else if(valorBoton == "enviarMailApproved") {
       subject = "Workshop de Mujeres 2017 en IBM"
       enviarMail(true, mailConfirmacion);
+
+    } else if (valorBoton[0] == "mailEnviadoApproved" && valorBoton[1] == "enviarPI"){
+      subject = "TESTING - Descubri tus talentos! - Workshop de Mujeres 2017 en IBM"
+      quierePI = true;
+      enviarMail(true, mailPI);
     }
 
+
     function validarUsuario(isValid, isMailSent) {
+
       var a = cloudant.updateUser(_id, _rev, nombre, email, isValid, isMailSent, orgTxt, explaination, date, null);
       if(a == false) {
         res.render("statsOK", {
@@ -177,6 +197,13 @@ app.post("/stats", (req, res) => {
     }
 
     function enviarMail(isValid, content) {
+      var personalidad = false;
+      if(quierePI) {
+        personalidad = true;
+      }
+
+      console.log("QUE LE PONGO? " + personalidad)
+
       var b = mailHelper.sendMail(from, subject, email, content);
 
       if(b == false) {
@@ -186,7 +213,7 @@ app.post("/stats", (req, res) => {
           message:"Error al enviar mail. Algo falla!! "
         });
       } else {
-        cloudant.updateUser(_id, _rev, nombre, email, isValid, true, orgTxt, explaination, date, null);
+        cloudant.updateUser(_id, _rev, nombre, email, isValid, true, orgTxt, explaination, date, personalidad);
         res.render("statsOK", {
           // message: "Mail fallo. Intente nuevamente. Mas detalles: " + error
           message: "Mail enviado! Haga clic en 'Atras' para seguir enviado mails"
@@ -198,12 +225,15 @@ app.post("/stats", (req, res) => {
 
   app.get("/personalidad", (req, res) => {
     var id = req.query.id;
+
     if(id != undefined) {
       cloudant.searchUser(id, (a) => {
+
         if(a == false || a == undefined) {
           res.render("error", {
             error: "No se encuentra el usuario registrado. ¿Ya validamos tu usuario?"
           });
+
         } else {
           var row = a[0];
           console.log("en search " + row._rev)
@@ -221,12 +251,13 @@ app.post("/stats", (req, res) => {
           });
         }
       }); // fin searchUser()
+
     } else {
       res.render("error", {
         error: "Debe acceder a '/personalidad' por el link del correo que le enviamos."
       });
     }
-  })
+  }) // fin get personalidad
 
   app.post("/personalidad", (req, res, next) => {
     var id = req.body.id,
@@ -239,24 +270,41 @@ app.post("/stats", (req, res) => {
         validado = req.body.validado,
         mailEnviado = req.body.mailEnviado;
 
+    var valorBoton = req.body.valorBoton;
+    console.log("boton clickeado ",valorBoton)
+
     var textoAnalizar = {
       language: "es",
       acceptedLanguage: "es",
       text: req.body.textoInput };
 
     profileFromText(textoAnalizar, (a) => {
+
       if(a == false) {
-        res.send("FAIL")
+        res.render("error", {
+          error: "Error con Personality Insights."
+        })
+
       } else {
-        var respuesta = cloudant.updateUser(id, rev, nombre, email, validado, mailEnviado, orgTxt, explaination, date, a);
-        if(respuesta == false) {
-          res.render("Error", {
-            error: "No se pudo guardar tu personalidad. Vuelva a intentar en otro momento, o guarde el modelo de prueba."
-          });
-        } else {
+        if(valorBoton == "test") {
           res.render("personalidadResponse", {
             sunburst: a
           })
+        } else if(valorBoton == "prod"){
+          var respuesta = cloudant.updateUser(id, rev, nombre, email, validado, mailEnviado, orgTxt, explaination, date, a);
+
+          if(respuesta == false) {
+            res.render("Error", {
+              error: "No se pudo guardar tu personalidad. Vuelva a intentar en otro momento, o guarde el modelo de prueba."
+            });
+
+          } else {
+            res.render("personalidadResponse", {
+              sunburst: a
+            })
+          }
+        } else {
+          res.send("ERROR")
         }
       }
     });

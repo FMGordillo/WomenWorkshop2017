@@ -40,6 +40,7 @@
               <th>Razon</th>
               <th>Fecha</th>
               <th></th>
+              <th></th>
             </tr>
             <% if(results.length) { results.forEach(function (row) { %>
                 <form id="form" action="/statsOK" method="post">
@@ -77,6 +78,16 @@
                           <input hidden name="valorBoton" value="mailEnviadoApproved">
                           <button type="submit" class="btn btn-small btn-success" disabled>Mail enviado
                         </td>
+                      <% if(row.personalidad == undefined || row.personalidad == null || row.personalidad == false) { %>
+                        <td>
+                          <input hidden name="valorBoton" value="enviarPI">
+                          <button id="PI" type="submit" class="btn btn-small btn-success">Enviar PI para el usuario
+                        </td>
+                      <% } else { %>
+                        <td>
+                          <button type="submit" class="btn btn-small btn-success" disabled>Enviar PI para el usuario
+                        </td>
+                      <% } %>
                       <% } %>
                       <% } else { %>
                       <td>No hay datos</td>
@@ -88,36 +99,6 @@
         </div>
       </div>
     </div>
-    <script>
-    $("#enviarMailRechazo").click(function() {
-      $("#form").submit(function(e) {
-        var url = "/statsSendMail"
-        $.ajax({
-          type: "POST",
-          url: url,
-          data: $("#form").serialize(),
-          success: function(data) {
-            alert("TODO BIEN!!");
-          }
-        });
-        e.preventDefault();
-      });
-    });
-    $("#enviarMailValidacion").click(function() {
-      $("#form").submit(function(e) {
-        var url = "/statsSendMail"
-        $.ajax({
-          type: "POST",
-          url: url,
-          data: $("#form").serialize(),
-          success: function(data) {
-            alert("TODO BIEN!!");
-          }
-        });
-        e.preventDefault();
-      });
-    });
-    </script>
   </body>
 
 </html>

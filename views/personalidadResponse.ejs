@@ -12,6 +12,7 @@
            <!-- &lt; <$= __("sunburst-back") $> -->
         </a>
       </p>
+      <button id="#hey">Obtener imagen</button>
 
     </div>
   </div>
@@ -19,11 +20,21 @@
   <script src="/js/jquery-3.1.1.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
   <script src="https://d3js.org/d3-color.v1.min.js"></script>
-  <script type="text/javascript" src="https://unpkg.com/personality-sunburst-chart@2.0.4/dist/index.js"></script>
-
+  <script type="text/javascript" src="/js/sunburst.js"></script>
   <script>
     var chart = new PersonalitySunburstChart({ 'selector': '#sunburstChart', 'version': 'v3' });
     chart.show(<%- JSON.stringify(sunburst) %>, "http://img1.wikia.nocookie.net/__cb20131220195325/naruto/es/images/thumb/7/78/Naruto_de_ni%C3%B1o_HD.PNG/180px-Naruto_de_ni%C3%B1o_HD.PNG");
+
+    // This example was created using Protovis & jQuery
+    // Base64 provided by http://www.webtoolkit.info/javascript-base64.html
+    // Modern web browsers have a builtin function to this as well 'btoa'
+  </script>
+  <script>
+    $(document).ready(function() {
+      $("#hey").click(function() {
+        saveAs(new Blob(document.getElementById("#sunburstChart").innerHTML, {type:"application/svg+xml"}), "name.svg")
+      })
+    })
   </script>
 </body>
 </html>
