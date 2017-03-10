@@ -45,21 +45,19 @@ const toContentItem = (tweet) => {
   };
 };
 
-const getProfile = (params) =>
-  new Promise((resolve, reject) => {
-    if (params.language) {
-      params.headers = {
-        'Content-Language': params.language,
-      };
+const getProfile = (params, callback) => {
+    params.headers = {
+      'Content-Language': params.language,
+      'accept-language': params.acceptedLanguage,
     }
-    return personalityInsights.profile(params, (err, profile) => {
+    personalityInsights.profile(params, (err, profile) => {
       if (err) {
-        reject(err);
+        callback(false);
       } else {
-        resolve(profile);
+        callback(profile);
       }
     });
-  });
+  }
 
 const profileFromTweets = (params) => (tweets) => {
   params.content_items = tweets.map(toContentItem);

@@ -18,7 +18,8 @@
 const mailHelper = require('./helpers/mail-helper'),
       cloudant = require("./helpers/cloudant"),
       personalityHelper = require('./helpers/personality-insights'),
-      profileFromTweets = personalityHelper.profileFromTweets,
+      pick = require('object.pick'),
+      // profileFromTweets = personalityHelper.profileFromTweets,
       profileFromText = personalityHelper.profileFromText,
       adminUser = process.env.USER_ADMIN || appEnv.getEnvVar('USER_ADMIN');
 
@@ -26,21 +27,21 @@ const mailHelper = require('./helpers/mail-helper'),
 
 module.exports = (app) => {
 
-  app.get("/", function(req, res) {
+  app.get("/", (req, res) => {
     res.render("index", {
       title: "Women Workshop"
     });
   });
 
-  app.get("/loginStats", function(req,res) {
+  app.get("/loginStats", (req,res) => {
     res.render("loginStats")
   })
 
-  app.get("/loginStatsMail", function(req,res) {
+  app.get("/loginStatsMail", (req,res) => {
     res.render("loginStatsMail")
   })
 
-  app.get("/stats", function(req, res) {
+  app.get("/stats", (req, res) => {
     if (req.body.Username != adminUser) {
       res.redirect('loginStats');
     } else {
@@ -48,26 +49,32 @@ module.exports = (app) => {
       }
   }); // -- end get /stats
 
-app.post("/stats", function(req, res) {
+app.post("/stats", (req, res) => {
   if (req.body.Username != adminUser) {
     res.redirect('loginStats');
   } else {
     var usuarios;
-    cloudant.listUsers(function(a) {
-      if(a == false || a == undefined ) {
-        res.render("error", {
-          error: "No hay datos, base de datos vacia."
-        });
-      } else {
-        res.render("stats", {
-          results: a
-        });
-      }
-    });
+    if(cloudant != undefined) {
+      cloudant.listUsers( (a) => {
+        if(a == false || a == undefined) {
+          res.render("error", {
+            error: "No hay datos; Base de datos vacia."
+          });
+        } else {
+          res.render("stats", {
+            results: a
+          })
+        }});
+    } else {
+      res.render("error", {
+        error: "No hay conexion con base de datos. Vuelva a ingresar en 30 segundos."
+      });
+    }
+
   }
 }); // fin /stats
 
-  app.get("/statsMail", function(req, res) {
+  app.get("/statsMail", (req, res) => {
     if (req.body.Username != adminUser) {
       res.redirect('loginStatsMail');
     } else {
@@ -75,8 +82,8 @@ app.post("/stats", function(req, res) {
     }
   });
 
-  app.post("/statsMail", function(req, res) {
-    cloudant.listUsers(function(a) {
+  app.post("/statsMail", (req, res) => {
+    cloudant.listUsers((a) => {
       if(a == false || a == undefined ) {
         res.render("error", {
           error: "No hay datos, base de datos vacia."
@@ -89,7 +96,7 @@ app.post("/stats", function(req, res) {
     });
   });
 
-  app.post("/statsOK", function(req, res) {
+  app.post("/statsOK", (req, res) => {
 
     var valorBoton = req.body.valorBoton;
 
@@ -157,7 +164,7 @@ app.post("/stats", function(req, res) {
     }
 
     function validarUsuario(isValid, isMailSent) {
-      var a = cloudant.updateUser(_id, _rev, nombre, email, isValid, isMailSent, orgTxt, explaination, date);
+      var a = cloudant.updateUser(_id, _rev, nombre, email, isValid, isMailSent, orgTxt, explaination, date, null);
       if(a == false) {
         res.render("statsOK", {
           message:"Error al validar al usuario. La Base de Datos no esta funcionando!"
@@ -173,13 +180,13 @@ app.post("/stats", function(req, res) {
       var b = mailHelper.sendMail(from, subject, email, content);
 
       if(b == false) {
-        cloudant.updateUser(_id, _rev, nombre, email, isValid, false, orgTxt, explaination, date);
+        cloudant.updateUser(_id, _rev, nombre, email, isValid, false, orgTxt, explaination, date, null);
 
         res.render("statsOK", {
           message:"Error al enviar mail. Algo falla!! "
         });
       } else {
-        cloudant.updateUser(_id, _rev, nombre, email, isValid, true, orgTxt, explaination, date);
+        cloudant.updateUser(_id, _rev, nombre, email, isValid, true, orgTxt, explaination, date, null);
         res.render("statsOK", {
           // message: "Mail fallo. Intente nuevamente. Mas detalles: " + error
           message: "Mail enviado! Haga clic en 'Atras' para seguir enviado mails"
@@ -189,15 +196,73 @@ app.post("/stats", function(req, res) {
 
   }); // -- fin post /statsOK
 
-  app.get("/personalidad", function(req, res) {
+  app.get("/personalidad", (req, res) => {
     var id = req.query.id;
-
-    res.render("personalidad"), {
-      title: "Personalidad TEST"
+    if(id != undefined) {
+      cloudant.searchUser(id, (a) => {
+        if(a == false || a == undefined) {
+          res.render("error", {
+            error: "No se encuentra el usuario registrado. ¿Ya validamos tu usuario?"
+          });
+        } else {
+          var row = a[0];
+          console.log("en search " + row._rev)
+          res.render("personalidad", {
+            title: "Tu personalidad",
+            id: id,
+            rev: row._rev, // Necesitamos el ultimo _rev para actualizar
+            name: row.name,
+            email: row.email,
+            validado: row.validado,
+            mailEnviado: row.mailEnviado,
+            orgText: row.orgText,
+            explaination: row.explaination,
+            date: row.date
+          });
+        }
+      }); // fin searchUser()
+    } else {
+      res.render("error", {
+        error: "Debe acceder a '/personalidad' por el link del correo que le enviamos."
+      });
     }
   })
 
-  app.post("/response", function(req, res, next) {
+  app.post("/personalidad", (req, res, next) => {
+    var id = req.body.id,
+        rev = req.body.rev, // Tomamos el ultimo _rev de la busqueda anterior...
+        nombre = req.body.name,
+        email = req.body.email,
+        orgTxt = req.body.orgText, // Nombre de organizacion
+        explaination = req.body.explaination, // Por que estas en el evento?
+        date = req.body.date,
+        validado = req.body.validado,
+        mailEnviado = req.body.mailEnviado;
+
+    var textoAnalizar = {
+      language: "es",
+      acceptedLanguage: "es",
+      text: req.body.textoInput };
+
+    profileFromText(textoAnalizar, (a) => {
+      if(a == false) {
+        res.send("FAIL")
+      } else {
+        var respuesta = cloudant.updateUser(id, rev, nombre, email, validado, mailEnviado, orgTxt, explaination, date, a);
+        if(respuesta == false) {
+          res.render("Error", {
+            error: "No se pudo guardar tu personalidad. Vuelva a intentar en otro momento, o guarde el modelo de prueba."
+          });
+        } else {
+          res.render("personalidadResponse", {
+            sunburst: a
+          })
+        }
+      }
+    });
+  })
+
+  app.post("/response", (req, res, next) => {
     var name = req.body.inputName,
     email = req.body.inputEmail,
     orgTxt = req.body.inputOrg,

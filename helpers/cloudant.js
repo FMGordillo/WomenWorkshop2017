@@ -41,7 +41,8 @@ exports.insertUser =  function(name, email, validado, mailEnviado, orgTxt, expla
     'mailEnviado': mailEnviado,
     'orgText': orgTxt,
     'explaination': explaination,
-    'date': date
+    'date': date,
+    'personalidad': null
   }, function(errDb,bodyDb,headerDb) {
     if(errDb) {
       console.log("Error creating document - ", errDb.message);
@@ -51,7 +52,7 @@ exports.insertUser =  function(name, email, validado, mailEnviado, orgTxt, expla
   });
 }
 
-exports.updateUser = function(id, rev, name, email, validado, mailEnviado, orgTxt, explaination, fecha) {
+exports.updateUser = (id, rev, name, email, validado, mailEnviado, orgTxt, explaination, fecha, personalidad) => {
   db.insert({
     "_id": id,
     "_rev": rev,
@@ -61,13 +62,15 @@ exports.updateUser = function(id, rev, name, email, validado, mailEnviado, orgTx
     'mailEnviado': mailEnviado,
     'orgText': orgTxt,
     'explaination': explaination,
-    'date': fecha
+    'date': fecha,
+    'personalidad': personalidad
   }
     , function(errDb, bodyDb, headerDb) {
     if(errDb) {
       console.log("Error uploading document - ", errDb.message);
       return false;
     } else {
+      rev = bodyDb.rev;
       console.log("all records updated.");
       return true;
     }
@@ -76,6 +79,17 @@ exports.updateUser = function(id, rev, name, email, validado, mailEnviado, orgTx
 
 exports.listUsers = function(callback) {
   db.find({selector: {_id:{ "$gt": 0}}}, function(err, body) {
+    if(err) {
+      console.log(err);
+      callback(err);
+    } else {
+      callback(body.docs);
+    }
+  });
+}
+
+exports.searchUser = (id, callback) => {
+  db.find({selector: {_id: id }}, function(err, body) {
     if(err) {
       console.log(err);
       callback(err);
