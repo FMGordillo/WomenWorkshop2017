@@ -914,7 +914,7 @@ var renderChart = function renderChart() {
   var width = this.dimW,
       height = this.dimH;
   // The flower had a radius of 640 / 1.9 = 336.84 in the original.
-  var radius = Math.min(width, height) / 3.2;
+  var radius = Math.min(width, height) / 3.14;
   var sector = twoArcsRender(radius);
 
   // Center the graph of 'g'

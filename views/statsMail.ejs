@@ -71,23 +71,17 @@
                       <% } else if (row.validado == true) { if(row.mailEnviado == false) { %>
                       <td>
                         <input hidden name="valorBoton" value="enviarMailApproved">
-                        <button class="btn btn-small btn-success">Enviar mail
+                        <button id="PI" type="submit" class="btn btn-small btn-success">Enviar mail
                       </td>
+                      <!-- <td>
+                        <input hidden name="valorBoton" value="enviarPI">
+                        <button id="PI" type="submit" class="btn btn-small btn-success">Enviar PI para el usuario
+                      </td> -->
                       <% } else { %>
                         <td>
                           <input hidden name="valorBoton" value="mailEnviadoApproved">
                           <button type="submit" class="btn btn-small btn-success" disabled>Mail enviado
                         </td>
-                      <% if(row.personalidad == undefined || row.personalidad == null || row.personalidad == false) { %>
-                        <td>
-                          <input hidden name="valorBoton" value="enviarPI">
-                          <button id="PI" type="submit" class="btn btn-small btn-success">Enviar PI para el usuario
-                        </td>
-                      <% } else { %>
-                        <td>
-                          <button type="submit" class="btn btn-small btn-success" disabled>Enviar PI para el usuario
-                        </td>
-                      <% } %>
                       <% } %>
                       <% } else { %>
                       <td>No hay datos</td>

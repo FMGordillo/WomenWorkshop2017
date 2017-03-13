@@ -115,6 +115,8 @@ app.post("/stats", (req, res) => {
     "<br>" +
     "<p>Te esperamos el pr&oacute;ximo jueves 16 de Marzo a las 14 hs en el auditorio mayor de IBM Argentina, Ingeniero Butty 275, 1er Subsuelo, CABA.</p>" +
     "<br>" +
+    "<p>El link para descubrir tus talentos es el siguiente: <a href='" + encodeURI("https://womenworkshop2017arg.mybluemix.net/personalidad?id=" + _id) + "'>Link para Personality Insights</a></p>" +
+    "<br>" +
     "<p>Saludos,</p>" +
     "<p>Raquel Godoy, Gerente de Ciudadan&iacute;a Corporativa de IBM</p>" +
     "<p>Argentina</p>";
@@ -131,7 +133,12 @@ app.post("/stats", (req, res) => {
 
     var mailPI = "<h1>Estimada " + req.body.name + "</h1>" +
     "<br>" +
-    "<p>El link para descubrir tus talentos es el siguiente: <a href='" + encodeURI("https://womenworkshop2017arg.mybluemix.net/personalidad?id=" + _id) + "'>Link para Personality Insights</a></p>" +
+    "<p>El pr&oacute;ximo jueves 16 de marzo a las 14hs te esperamos en el Workshop 'Descubr&iacute; tus Talentos'.</p>" +
+    "<br>" +
+    // "<p>El link para descubrir tus talentos es el siguiente: <a href='" + encodeURI("https://womenworkshop2017arg.mybluemix.net/personalidad?id=" + _id) + "'>Link para Personality Insights</a></p>" +
+    "<p><b>Es importante que <u>antes de asistir</u></b> puedas conocer qu&eacute; caracter&iacute;sticas de tu personalidad y talentos identifica Watson, la tecnolog&iacute;a de computaci&oacute;n cognitiva de IBM. Te invitamos a completar un test muy sencillo en el siguiente <b><a href='" + encodeURI('https://womenworkshop2017arg.mybluemix.net/personalidad?id=' + _id) + "'>link</a></b>, s&oacute;lo deb&eacute;s ingresar un texto escrito por vos y Watson analiza tu personalidad en un clic.</p>" +
+    "<br>" +
+    "<p>La información de tu an&aacute;lisis es personal y no se divulgar&aacute;n tus resultados individuales. Te recomendamos llevar una copia al workshop para tener presente &aacute;reas foco de desarrollo.</p>" +
     "<br>" +
     "<p>Saludos,</p>" +
     "<p>Raquel Godoy, Gerente de Ciudadan&iacute;a Corporativa de IBM</p>" +
@@ -175,10 +182,11 @@ app.post("/stats", (req, res) => {
       subject = "Workshop de Mujeres 2017 en IBM"
       enviarMail(true, mailConfirmacion);
 
-    } else if (valorBoton[0] == "mailEnviadoApproved" && valorBoton[1] == "enviarPI"){
-      subject = "TESTING - Descubri tus talentos! - Workshop de Mujeres 2017 en IBM"
+    // } else if (valorBoton[0] == "mailEnviadoApproved" && valorBoton[1] == "enviarPI"){
+    } else if (valorBoton[0] == "enviarPI"){
+      subject = "Descubri tus talentos! - Workshop de Mujeres 2017 en IBM"
       quierePI = true;
-      enviarMail(true, mailPI);
+      enviarMail(true, mailConfirmacion);
     }
 
 
@@ -257,7 +265,7 @@ app.post("/stats", (req, res) => {
 
       var textoAnalizado;
 
-      cloudant.searchUser(id, (a) => {
+      cloudant.searchUser(idSolved, (a) => {
         if(a == false || a == undefined) {
           res.render("error", {
             error: "No se encuentra el usuario registrado. ¿Ya validamos tu usuario?"

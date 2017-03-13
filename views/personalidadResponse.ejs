@@ -4,70 +4,79 @@
     <link rel="shortcut icon" type="image/png" href="/img/favicon.ico"/>
     <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://pingendo.github.io/pingendo-bootstrap/themes/default/bootstrap.css" rel="stylesheet" type="text/css">
-    <style>
-      .error {
-        color: red;
-      }
-      h3 {
-        font-family: "Tahoma", Times, sans-serif;
-        font-size: 25px;
-      }
-    </style>
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
   </head>
-  <div class="cover" style="opacity: 0.85">
+  <div class="_demo--container">
+    <div class="_content">
+      <div id="sunburstChart"></div>
+    </div>
+  </div>
+
+  <!-- <div class="cover" style="opacity: 0.85">
       <div class="cover-image" style="background-image : url('/img/background2.jpg')"></div>
       <div class="container" style="background-color: rgb(247,247,249);">
-        <h2 class="text-center">
+        <h2 class="text-center"> -->
           <!-- <$= __("sunburst-title") $> -->
-        </h2>
+        <!-- </h2> -->
 
-        <div id="sunburstChart"></div>
-        <canvas id="canvas"></canvas>
+        <!-- <div style="display:none;" id="sunburstChart"></div> -->
 
-        <p class="base--p">
-          <a class="base--a" href='/'>
-             <!-- &lt; <$= __("sunburst-back") $> -->
-          </a>
-        </p>
-        <button id="editor_save">Obtener imagen</button>
-      </div>
-    </div>
+
+      <!-- </div>
+    </div> -->
 
   <script src="/js/jquery-3.1.1.min.js"></script>
   <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script> -->
   <script src="https://d3js.org/d3.v3.min.js"></script>
   <script src="https://d3js.org/d3-color.v1.min.js"></script>
-  <script type="text/javascript" src="/js/sunburst.js"></script>
+  <!-- <script type="text/javascript" src="/js/sunburst.js"></script> -->
+  <script src="https://unpkg.com/personality-sunburst-chart@2.0.4/dist/index.js"></script>
   <script>
+  var chart = new PersonalitySunburstChart({ 'selector': '#sunburstChart', 'version': 'v3'});
+  chart.show(<%- JSON.stringify(sunburst) %>);
+  </script>
+  <!-- <script>
     var chart = new PersonalitySunburstChart({ 'selector': '#sunburstChart', 'version': 'v3'});
-    chart.show(<%- JSON.stringify(sunburst) %>, "http://img1.wikia.nocookie.net/__cb20131220195325/naruto/es/images/thumb/7/78/Naruto_de_ni%C3%B1o_HD.PNG/180px-Naruto_de_ni%C3%B1o_HD.PNG");
+    chart.show(<%- JSON.stringify(sunburst) %>);
 
-    // This example was created using Protovis & jQuery
-    // Base64 provided by http://www.webtoolkit.info/javascript-base64.html
-    // Modern web browsers have a builtin function to this as well 'btoa'
-  </script>
-  <script type="text/javascript" src="http://canvg.github.io/canvg/rgbcolor.js"></script>
-  <script type="text/javascript" src="http://canvg.github.io/canvg/StackBlur.js"></script>
-  <script type="text/javascript" src="http://canvg.github.io/canvg/canvg.js"></script>
-  <script>
-  $(document).ready(function() {
-    $("#editor_save").click(function() {
-      var canvas = document.getElementById("canvas");
-      canvg('canvas', $("#sunburstChart").html());
-
-      var img = canvas.toDataURL("image/png");
-      document.write('<img src="'+img+'"/>');
-
-    });
-  })
-    // window.onload = function() {
-    //   console.log(document.getElementById('canvas'))
-    //   console.log(document.getElementById("sunburstChart").children[0].innerHTML)
-    //   canvg(document.getElementById('canvas'), document.getElementById("sunburstChart").children[0].innerHTML)
-    //   var canvas = document.getElementById("canvas");
-    //   var img  = canvas.toDataURL("image/png");
-    //   document.write('<img src="'+img+'"/>');
-    // }
-  </script>
+    var doctype = '<?xml version="1.0" standalone="no"?>'
+    + '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
+    // serialize our SVG XML to a string.
+    var source = (new XMLSerializer()).serializeToString(d3.select('svg').node());
+    // create a file blob of our SVG.
+    var blob = new Blob([ doctype + source], { type: 'image/svg+xml;charset=utf-8' });
+    var url = window.URL.createObjectURL(blob);
+    // Put the svg into an image tag so that the Canvas element can read it in.
+    var img = d3.select('.container').append('img')
+    .classed("img-responsive", true)
+    .attr('width', 1000)
+    .attr('height', 1000)
+            //  .style("display", "none")
+             .node();
+    img.onload = function(){
+      // Now that the image has loaded, put the image into a canvas element.
+      var canvas = d3.select('body')
+                  .append('canvas')
+                  .style("display", "none")
+                  .node();
+      canvas.width = 1000;
+      canvas.height = 1000;
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      var canvasUrl = canvas.toDataURL("image/png");
+      var img2 = d3.select('body').append('img')
+        .attr('width', 1920)
+        .attr('height', 1080)
+        .style("display", "none")
+        .node();
+      // this is now the base64 encoded version of our PNG! you could optionally
+      // redirect the user to download the PNG by sending them to the url with
+      // `window.location.href= canvasUrl`.
+      img2.src = canvasUrl;
+      // window.location.href= canvasUrl
+    }
+    img.src = url;
+    console.log(img2.src)
+   </script> -->
 </body>
 </html>
