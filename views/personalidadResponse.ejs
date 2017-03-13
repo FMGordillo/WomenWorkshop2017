@@ -1,40 +1,73 @@
-<!-- <$ include partials/header $> -->
-  <div class="_demo--container">
-    <div class="_content input">
-      <h2 class="base--h2">
-        <!-- <$= __("sunburst-title") $> -->
-      </h2>
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.ico"/>
+    <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://pingendo.github.io/pingendo-bootstrap/themes/default/bootstrap.css" rel="stylesheet" type="text/css">
+    <style>
+      .error {
+        color: red;
+      }
+      h3 {
+        font-family: "Tahoma", Times, sans-serif;
+        font-size: 25px;
+      }
+    </style>
+  </head>
+  <div class="cover" style="opacity: 0.85">
+      <div class="cover-image" style="background-image : url('/img/background2.jpg')"></div>
+      <div class="container" style="background-color: rgb(247,247,249);">
+        <h2 class="text-center">
+          <!-- <$= __("sunburst-title") $> -->
+        </h2>
 
-      <div id="sunburstChart"></div>
+        <div id="sunburstChart"></div>
+        <canvas id="canvas"></canvas>
 
-      <p class="base--p">
-        <a class="base--a" href='/'>
-           <!-- &lt; <$= __("sunburst-back") $> -->
-        </a>
-      </p>
-      <button id="#hey">Obtener imagen</button>
-
+        <p class="base--p">
+          <a class="base--a" href='/'>
+             <!-- &lt; <$= __("sunburst-back") $> -->
+          </a>
+        </p>
+        <button id="editor_save">Obtener imagen</button>
+      </div>
     </div>
-  </div>
 
   <script src="/js/jquery-3.1.1.min.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+  <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script> -->
+  <script src="https://d3js.org/d3.v3.min.js"></script>
   <script src="https://d3js.org/d3-color.v1.min.js"></script>
   <script type="text/javascript" src="/js/sunburst.js"></script>
   <script>
-    var chart = new PersonalitySunburstChart({ 'selector': '#sunburstChart', 'version': 'v3' });
+    var chart = new PersonalitySunburstChart({ 'selector': '#sunburstChart', 'version': 'v3'});
     chart.show(<%- JSON.stringify(sunburst) %>, "http://img1.wikia.nocookie.net/__cb20131220195325/naruto/es/images/thumb/7/78/Naruto_de_ni%C3%B1o_HD.PNG/180px-Naruto_de_ni%C3%B1o_HD.PNG");
 
     // This example was created using Protovis & jQuery
     // Base64 provided by http://www.webtoolkit.info/javascript-base64.html
     // Modern web browsers have a builtin function to this as well 'btoa'
   </script>
+  <script type="text/javascript" src="http://canvg.github.io/canvg/rgbcolor.js"></script>
+  <script type="text/javascript" src="http://canvg.github.io/canvg/StackBlur.js"></script>
+  <script type="text/javascript" src="http://canvg.github.io/canvg/canvg.js"></script>
   <script>
-    $(document).ready(function() {
-      $("#hey").click(function() {
-        saveAs(new Blob(document.getElementById("#sunburstChart").innerHTML, {type:"application/svg+xml"}), "name.svg")
-      })
-    })
+  $(document).ready(function() {
+    $("#editor_save").click(function() {
+      var canvas = document.getElementById("canvas");
+      canvg('canvas', $("#sunburstChart").html());
+
+      var img = canvas.toDataURL("image/png");
+      document.write('<img src="'+img+'"/>');
+
+    });
+  })
+    // window.onload = function() {
+    //   console.log(document.getElementById('canvas'))
+    //   console.log(document.getElementById("sunburstChart").children[0].innerHTML)
+    //   canvg(document.getElementById('canvas'), document.getElementById("sunburstChart").children[0].innerHTML)
+    //   var canvas = document.getElementById("canvas");
+    //   var img  = canvas.toDataURL("image/png");
+    //   document.write('<img src="'+img+'"/>');
+    // }
   </script>
 </body>
 </html>

@@ -225,6 +225,7 @@ app.post("/stats", (req, res) => {
 
   app.get("/personalidad", (req, res) => {
     var id = req.query.id;
+    var idSolved = req.query.idSolved;
 
     if(id != undefined) {
       cloudant.searchUser(id, (a) => {
@@ -249,6 +250,37 @@ app.post("/stats", (req, res) => {
             explaination: row.explaination,
             date: row.date
           });
+        }
+      }); // fin searchUser()
+
+    } else if(idSolved != undefined) {
+
+      var textoAnalizado;
+
+      cloudant.searchUser(id, (a) => {
+        if(a == false || a == undefined) {
+          res.render("error", {
+            error: "No se encuentra el usuario registrado. ¿Ya validamos tu usuario?"
+          });
+        } else {
+          var row = a[0];
+          textoAnalizado = {
+            language: "es",
+            acceptedLanguage: "es",
+            text: row.personalidad }
+
+            profileFromText(textoAnalizado, (a) => {
+              if(a == false) {
+                res.render("error", {
+                  error: "Error con Personality Insights."
+                })
+
+              } else {
+                res.render("personalidadResponse", {
+                  sunburst: a
+                })
+              }
+            }) // -- fin profileFromText
         }
       }); // fin searchUser()
 
@@ -306,8 +338,8 @@ app.post("/stats", (req, res) => {
         } else {
           res.send("ERROR")
         }
-      }
-    });
+      } // -- fin else (a == true)
+    }); // -- fin profileFromText
   })
 
   app.post("/response", (req, res, next) => {

@@ -350,8 +350,8 @@ var PersonalitySunburstChart = function () {
     this._selector = this._options.selector;
     this.visualizationWidth = this._options.width || '100%';
     this.visualizationHeight = this._options.height || '100%';
-    this.width = (1 / this._options.scale || 1) * 45 * 16.58;
-    this.height = (1 / this._options.scale || 1) * 45 * 16.58;
+    this.width = (1 / 0.7 || 1) * 45 * 16.58;
+    this.height = (1 / 0.7 || 1) * 45 * 16.58;
     this.exclude = this._options.exclude || [];
     this.d3Container = d3.select(this._selector), this.dimW = this.width, this.dimH = this.height, this.d3vis = undefined, this.touchDiv = undefined, this.data = undefined, this.id = 'SystemUWidget', this.COLOR_PALLETTE = colors, this.loadingDiv = 'dummy';
   }
@@ -907,6 +907,7 @@ var renderChart = function renderChart() {
         //set new offset:
         d3.select(this).attr('startOffset', (sector_length - curNd.getComputedTextLength()) / 2);
       }
+
     });
   }
 
