@@ -180,13 +180,13 @@ app.post("/stats", (req, res) => {
 
     } else if(valorBoton == "enviarMailApproved") {
       subject = "Workshop de Mujeres 2017 en IBM"
-      enviarMail(true, mailConfirmacion);
+      enviarMail(true, mailPI);
 
     // } else if (valorBoton[0] == "mailEnviadoApproved" && valorBoton[1] == "enviarPI"){
     } else if (valorBoton[0] == "enviarPI"){
       subject = "Descubri tus talentos! - Workshop de Mujeres 2017 en IBM"
       quierePI = true;
-      enviarMail(true, mailConfirmacion);
+      enviarMail(true, mailPI);
     }
 
 
