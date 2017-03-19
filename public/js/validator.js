@@ -62,5 +62,54 @@ $(document).ready(function() {
         }
       }
     }).form();
-  })
+  }) // -- end Btn
+  $("#sendTestBtn").click(function () {
+    $("#form2").validate({
+      rules: {
+        textoInput: {
+          required: true,
+          minWords: 600
+        }
+      },
+      messages: {
+        textoInput: {
+          required: "Por favor ingrese su texto a analizar.",
+          minWords: jQuery.validator.format("Por lo menos {0} palabras son necesarias para un análisis eficiente.")
+        }
+      },
+      highlight: function(element, errorClass, validClass) {
+      $(element).addClass(errorClass).removeClass(validClass);
+      $(element.form).find("label[for=" + element.id + "]")
+        .addClass(errorClass);
+      },
+      unhighlight: function(element, errorClass, validClass) {
+        $(element).removeClass(errorClass).addClass(validClass);
+        $(element.form).find("label[for=" + element.id + "]")
+          .removeClass(errorClass);
+      },
+      // success: "valid",
+      submitHandler: function(form) {
+        $("div.alert.alert-warning").hide();
+        form.submit();
+      },
+      errorPlacement: function(error, element) {
+        // var txt = "<span class='label label-war<ning'></span>";
+        error.css("color", "red;").appendTo(element.parent());
+      },
+      invalidHandler: function(event, validator) {
+      // 'this' refers to the form
+      var errors = validator.numberOfInvalids();
+      if (errors) {
+        var message = errors == 1
+          ? 'Hay un campo vacío, o con error. Por favor, verifique.'
+          : 'Hay ' + errors + ' campos vacíos, o con errores. Por favor, verifique.';
+        $("div.alert.alert-warning").text(message).css("color", "black");
+        $('html, body').animate({ scrollTop: 0 }, 'slow');
+        $("div.alert.alert-warning").show();
+        } else {
+          $("div.alert.alert-warning").hide();
+        }
+      }
+    }).form();
+  }) // -- end Button 2
 })
