@@ -18,17 +18,20 @@ nodemon
 ```
 4- Go on and check it out
 ```
-http://localhost:6003 
+http://localhost:3000
 ```
 
 ## Contributing
 
 ***TODO***: [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
 
-## Authors
+## Author
 
-* **Facundo Martin Gordillo** - *Node.js work* - [FMGordillo](https://github.com/FMGordillo)
-* **Lucas Francisco Gomez Lanza** - *Look & Feel* - [lucasglanza](https://github.com/lucasglanza)
+**Facundo Martin Gordillo** - *Node.js work* - [FMGordillo](https://github.com/FMGordillo)
+
+## Contributors
+
+* **Carolina Florencia Cueliche** - *Look & Feel* - [carocueliche](https://github.com/carocueliche)
 
 TODO: See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
