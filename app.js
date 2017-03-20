@@ -5,7 +5,7 @@ const app = express();
 require("./config/express")(app);
 
 app.use(cookieParser());
-app.use(session({resave: 'true', saveUninitialized: 'true' , secret: 'keyboard cat'}));
+app.use(session({resave: 'true', saveUninitialized: 'true' , secret: 'asereje', name: "sessionId"}));
 
 console.log(process.argv.join(" "));
 

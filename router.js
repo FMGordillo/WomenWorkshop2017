@@ -23,8 +23,6 @@ const mailHelper = require('./helpers/mail-helper'),
       profileFromText = personalityHelper.profileFromText,
       adminUser = process.env.USER_ADMIN || appEnv.getEnvVar('USER_ADMIN');
 
-// import { mjml2html } from 'mjml';
-
 module.exports = (app) => {
 
   app.get("/", (req, res) => {
@@ -34,12 +32,16 @@ module.exports = (app) => {
   });
 
   app.get("/loginStats", (req,res) => {
-    res.render("loginStats")
-  })
+    res.render("loginStats", {
+      title: "ADMIN - Login"
+    });
+  });
 
   app.get("/loginStatsMail", (req,res) => {
-    res.render("loginStatsMail")
-  })
+    res.render("loginStatsMail", {
+      title: "ADMIN - Login"
+    })
+  });
 
   app.get("/stats", (req, res) => {
     if (req.body.Username != adminUser) {
@@ -58,19 +60,21 @@ app.post("/stats", (req, res) => {
       cloudant.listUsers( (a) => {
         if(a == false || a == undefined) {
           res.render("error", {
+            title: "Error: Cloudant",
             error: "No hay datos; Base de datos vacia."
           });
         } else {
           res.render("stats", {
+            title: "ADMIN - Stats",
             results: a
-          })
+          });
         }});
     } else {
       res.render("error", {
+        title: "Error - Cloudant",
         error: "No hay conexion con base de datos. Vuelva a ingresar en 30 segundos."
       });
     }
-
   }
 }); // fin /stats
 
@@ -86,10 +90,12 @@ app.post("/stats", (req, res) => {
     cloudant.listUsers((a) => {
       if(a == false || a == undefined ) {
         res.render("error", {
+          title: "Error - Cloudant",
           error: "No hay datos, base de datos vacia."
         });
       } else {
         res.render("statsMail", {
+          title: "Admin - Stats Mail",
           results: a
         });
       }
@@ -148,17 +154,8 @@ app.post("/stats", (req, res) => {
     var mailEnviado;
     var quierePI = false;
 
-    if(req.body.validado == true) {
-      validado = true;
-    } else {
-      validado = false;
-    }
-
-    if(req.body.mailEnviado == true) {
-      mailEnviado = true;
-    } else {
-      mailEnviado = false;
-    }
+    req.body.validado ? validado = true : validado = false;
+    req.body.mailEnviado ? mailEnviado = true : mailEnviado = false;
 
     var from = "ragodoy@ar.ibm.com",
         subject = "";
@@ -167,33 +164,32 @@ app.post("/stats", (req, res) => {
     console.log(valorPI)
 
     // TODO mejorar estos metodos usando JQuery
-    if(valorBoton == "usuarioAValidar") {
-      if(mailEnviado == false){
-        validarUsuario(true, false);
-      } else {
-        validarUsuario(true, true);
-      }
-
-    } else if(valorBoton == "enviarMailReject") {
-      subject = "Confirmación Workshop de Mujeres 2017 en IBM"
-      enviarMail(false, mailRechazo);
-
-    } else if(valorBoton == "enviarMailApproved") {
-      subject = "Workshop de Mujeres 2017 en IBM"
-      enviarMail(true, mailPI);
-
-    // } else if (valorBoton[0] == "mailEnviadoApproved" && valorBoton[1] == "enviarPI"){
-    } else if (valorBoton[0] == "enviarPI"){
-      subject = "Descubri tus talentos! - Workshop de Mujeres 2017 en IBM"
-      quierePI = true;
-      enviarMail(true, mailPI);
+    switch (valorBoton) {
+      case "usuarioAValidar":
+        mailEnviado ? validarUsuario(true, true) : validarUsuario(true, false)
+        break;
+      case "enviarMailReject":
+        subject = "Confirmación Workshop de Mujeres 2017 en IBM"
+        enviarMail(false, mailRechazo);
+        break;
+      case "enviarMailApproved":
+        subject = "Workshop de Mujeres 2017 en IBM"
+        enviarMail(true, mailPI);
+        break;
+      case "enviarPI":
+        subject = "Descubri tus talentos! - Workshop de Mujeres 2017 en IBM"
+        quierePI = true;
+        enviarMail(true, mailPI);
+        break;
+      default:
+        console.log("ALGO FALLO, AIUDA")
     }
 
 
     function validarUsuario(isValid, isMailSent) {
 
       var a = cloudant.updateUser(_id, _rev, nombre, email, isValid, isMailSent, orgTxt, explaination, date, null);
-      if(a == false) {
+      if(!a) {
         res.render("statsOK", {
           message:"Error al validar al usuario. La Base de Datos no esta funcionando!"
         });
@@ -206,15 +202,14 @@ app.post("/stats", (req, res) => {
 
     function enviarMail(isValid, content) {
       var personalidad = false;
-      if(quierePI) {
-        personalidad = true;
-      }
+
+      if(quierePI) { personalidad = true; }
 
       console.log("QUE LE PONGO? " + personalidad)
 
       var b = mailHelper.sendMail(from, subject, email, content);
 
-      if(b == false) {
+      if(!b) {
         cloudant.updateUser(_id, _rev, nombre, email, isValid, false, orgTxt, explaination, date, null);
 
         res.render("statsOK", {
