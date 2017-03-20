@@ -1,0 +1,108 @@
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.ico"/>
+    <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://pingendo.github.io/pingendo-bootstrap/themes/default/bootstrap.css" rel="stylesheet" type="text/css">
+    <style>
+      .error {
+        color: red;
+      }
+      h3 {
+        font-family: "Tahoma", Times, sans-serif;
+        font-size: 25px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cover" style="opacity: 0.85">
+      <div class="cover-image" style="background-image : url('/img/background2.jpg')"></div>
+      <div class="container" style="padding: 50px; margin-top: 50px; margin-bottom: 50px; background-color: rgb(247,247,249);">
+        <div class="alert alert-warning" role="alert" hidden></div>
+        <div class="row">
+          <div class="col-md-12">
+            <h1 class="text-center">¿Es posible romper el techo de cristal?</h1>
+            <h2 class="text-center" style="padding-bottom:20;">Foro Debate de Mujeres Ejecutivas</h2>
+            <div class="bg-info">
+  			      <h3 class="text-center" style="padding-top:20;">Martes 4 de abril de 10.30 a 13.30hs</h3>
+              <h3 class="text-center" style="padding-bottom:20;">Auditorio Mayor de IBM Argentina, Ingeniero Butty 275, 1º Subsuelo, CABA.</h3>
+              <a href="#inscripcion" class="btn btn-primary btn-xl page-scroll">Pre Inscripción</a>
+            </div>
+          </div>
+        </div>
+        <div class="container" backgroundcolor:#C71585 fontcolor:#FFFFFF>
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 text-center">
+                    <p class="text-faded">IBM Argentina invita a participar de un Foro Debate sobre los desafíos de las mujeres para convertirse en líderes en el sector púbico y privado. Para romper el techo de cristal es clave ser visibles, fortalecer el networking, planificar nuestra carrera y balancear las responsabilidades personales y laborales. Un selecto grupo de mujeres ejecutivas presenta su experiencia:</p>
+                    <div>
+                      <img src="imagenes/graciela.jpg" alt="avatar" class="img-responsivecenter-block"> ==$0s
+                      <a href="https://www.linkedin.com/in/graciela-di-rado-05919ab/">Graciela Di Rado</a>
+                      <p>Directora de Marketing & Comunicaciones de IBM Latinoamérica</p>
+                    </div>
+                    <div>
+                      <img src="imagenes/helena.jpg" alt="avatar" class="img-responsivecenter-block"> ==$0s
+                      <a href="https://www.linkedin.com/in/helenaestrada/">Helena Estrada</a>
+                      <p>Asesora en el Desarrollo Económico de la Mujer en Secretaría de Emprendedores y de la Pequeña y Mediana Empresa del Ministerio de Producción de la Nación</p>
+                    </div>
+                    <div>
+                      <img src="imagenes/susana.jpg" alt="avatar" class="img-responsivecenter-block"> ==$0s
+                      <a href="https://www.linkedin.com/in/susanav2/">Susana Von Der Heide</a>
+                      <p>Presidenta & Thinking Partner en VON DER HEIDE</p>
+                    </div>
+                    <div>
+                      <img src="imagenes/marcela.jpg" alt="avatar" class="img-responsivecenter-block"> ==$0s
+                      <a href="https://www.linkedin.com/in/marcela-fernie-8192847/">Marcela Fernie</a>
+                      <p>Gerente de Marketing en Banco Galicia</p>
+                    </div>
+                    <div>
+                      <p> Moderador: Ignacio Vaca de Osma, Director de Marketing, Comunicaciones y Relaciones Corporativas de IBM Argentina</p>
+                        <br>
+                      <p> Cierre: “Asumirnos Protagonistas”. Herramientas de Coaching y Programación Neurolingüística para avanzar en la carrera profesional, por Ulises Paradiso, Director de Lideractio</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-left">
+            <form id="form" role="form" data-toggle="validator" action="/response" method="post">
+              <div class="form-group">
+                <label class="control-label" name="inputName">Nombre y Apellido<span style="color: red;">*</span></label>
+                <input class="form-control" id="inputName" name="inputName">
+              </div>
+               <div class="form-group">
+                <label class="control-label" name="inputEmail">Correo Electr&oacute;nico <span style="color: red;">*</span></label>
+                <input class="form-control" name="inputEmail" id="inputEmail" type="email">
+              </div>
+              <div class="form-group">
+                <label class="control-label" name="inputOrganizacion">Organización<span style="color: red;">*</span></label>
+                <input class="form-control" name="inputOrganizacion" id="inputOrganizacion">
+              </div>
+              <div class="form-group">
+                <label class="control-label" name="inputPuesto">Puesto<span style="color: red;">*</span></label>
+                <input class="form-control" name="inputPuesto" id="inputPuesto">
+              </div>             
+              <div class="form-group">
+                <label class="control-label" name="inputPerfilLinkedin">Perfil Linkedin</label>
+                <input class="form-control" name="inputPerfilLinkedin" placeholder="Completá con la URL de tu perfil de LinkedIn">
+              </div>
+            <br>
+            <br>
+            <div class="row">
+              <div class="col-md-12">
+                <!-- <a id="mainBtn" class="active btn btn-block btn-lg btn-primary" data-toggle="modal" data-target="#myModal">Enviar</a> -->
+                <button id="mainBtn" type="submit" class="btn btn-block btn-lg btn-primary">Enviar</button>
+                <p style="font-size: 14px;" class="text-center">Al enviar este formulario acepto que IBM pueda procesar mis datos de la forma indicada anteriormente, y tal como describe en la declaraci&oacute;n de Privacidad de IBM (<a href="https://www.ibm.com/privay/ar/es">https://www.ibm.com/privay/ar/es</a>)</p>
+              </div>
+            </div>
+          </form>
+        </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="/js/jquery-3.1.1.min.js"></script>
+    <!-- <script type="text/javascript" src="/js/validator.min.js"></script> -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/validator.js"></script>
+</body>
+</html>
